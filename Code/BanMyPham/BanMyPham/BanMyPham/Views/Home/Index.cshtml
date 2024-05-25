@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "innisfree Việt Nam Official Website";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<!-- Slider -->
+
+<div class="slider">
+    <div class="slider-container">
+        <img src="~/Content/assets/images/banner1.jpg" alt="Image 1">
+        <img src="~/Content/assets/images/banner2.jpg" alt="Image 2">
+    </div>
+</div>
+
+
+
+<!-- Bán Chạy -->
+@Html.Action("Partial_ProductSale", "Products")
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit_row">
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Miễn Phí Ship Toàn Quốc</h6>
+                        <p>Giao Hàng Nhanh Trong Khu Vực Hà Nội</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Thanh Toán Trực Tuyến</h6>
+                        <p>Nhanh Chóng - An Toàn - Tiện Lợi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Hoàn Trả Hàng Trong 30 Ngày</h6>
+                        <p>1 Đổi 1 trong 7 Ngày </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Thời Gian Làm Việc</h6>
+                        <p>Từ 8h - 20h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var slideIndex = 0; //để theo dõi chỉ số của ảnh hiện tại trong slider.
+            var slides = $('.slider-container img'); //lưu trữ tất cả các phần tử < img > trong phần tử có lớp.slider - container.
+            var slideCount = slides.length; //slideCount lưu trữ số lượng ảnh trong slider. Chúng ta sử dụng .length để lấy số phần tử trong biến slides.
+
+            function showSlide() {
+                slides.removeClass('active');
+                slides.eq(slideIndex).addClass('active');
+                var transformValue = -slideIndex * 33.333; //tính toán giá trị transformValue để di chuyển slider sang ảnh hiện tại bằng cách sử dụng CSS transform và translateX(). khi chuyển ảnh sẽ là transform: translateX(-33.333%);
+                $('.slider-container').css('transform', 'translateX(' + transformValue + '%)');
+            }
+
+            function nextSlide() {
+                slideIndex++;
+                if (slideIndex >= slideCount) { //chuyển đến ảnh tiếp theo trong slider tăng giá trị của slideIndex lên 1. 
+                    slideIndex = 0;
+                }
+                showSlide(); //để hiển thị ảnh mới.
+            }
+
+            setInterval(nextSlide, 4000); // Chuyển đổi ảnh sau mỗi 3 giây
+        });
+    </script>
+}

@@ -1,0 +1,57 @@
+﻿@model BanDongHo.Models.EF.ReviewProduct
+
+<div class="add_review">
+    @using (Ajax.BeginForm("PostReview", "Review", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "load_review",
+        OnSuccess = "OnSuccessRE",
+        OnFailure = "OnFailureRE",
+        OnBegin = "OnBeginRE"
+
+    }, new { @Id = "review_form" }))
+    {
+        <script>
+            @*khi chuyển sang link thanh toán sẽ hiện thẻ h2 *@
+            function OnBeginRE() {
+            $('#review_submit').attr("disabled", "disabled");
+            $('#load_send').html('<h2>Đang gửi....</h2>');
+        }
+            function OnSuccessRE(res) {
+                if (res.Success) {
+                    $("#review_form")[0].reset();
+                    location.reload();
+            }
+        }
+                //function OnFailure() {
+
+                //}
+        </script>
+        //Khi @Html.AntiForgeryToken() được sử dụng trong một form trong Razor view, nó sẽ tạo ra một mã thông báo duy nhất (token) và chèn nó vào mã HTML của form đó.
+        //Mã thông báo này sẽ được sử dụng để xác thực rằng yêu cầu gửi đi từ trang web là hợp lệ và không bị giả mạo.
+        @Html.AntiForgeryToken()
+<div>
+    <h1>Thêm đánh giá</h1>
+    @Html.TextBoxFor(x => x.FullName, new { @class = "form-control", @id = "review_name", @placeholder = "Nhập Tên Của Bạn..." , @style= "margin: 5px 0;", @required = "required", @data_val_required = "Vui lòng nhập tên của bạn!" })
+    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @id = "review_email", @placeholder = "Nhập Email Của Bạn...", @required = "required", @data_val_required = "Vui lòng nhập email của bạn!" })
+    @Html.HiddenFor(x => x.UserName)
+    @Html.HiddenFor(x => x.ProductId, new { @Value = ViewBag.ProductId })
+    <input type="text" id="txtRate" name="Rate" value="3" style="visibility:hidden;"/>
+</div>
+        <div class="reviewStyle">
+            <h1>Đánh Giá:</h1>
+            <ul class="user_star_rating">
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+            </ul>
+        </div>
+            @Html.TextAreaFor(x => x.Content, new { @class = "form-control", @rows = "4", @placeholder = "Nhập đánh giá của bạn..." })
+        <div class="text-left text-sm-right" style=" margin-top: 6px;">
+            <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">Đánh Giá</button>
+        </div>
+    }
+    </div>
+   

@@ -1,0 +1,55 @@
+﻿@model PagedList.IPagedList<BanDongHo.Models.EF.ReviewProduct>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "All_Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_styles.css">
+@{
+    var lastProductId = 0;
+}
+<div class="container single_product_container">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+
+            <div class="row">
+                <div class="col">
+                    <div class="user_review_container d-flex flex-column flex-sm-row " style="margin-top: 10px; flex-direction: row ;">
+                        <div class="user">
+                            <div class="user_pic">
+                                <img style=" width: 70px; height: 70px;" src="https://t3.ftcdn.net/jpg/06/03/30/74/360_F_603307418_jya3zntHWjXWn3WHn7FOpjFevXwnVP52.jpg" />
+                            </div>
+                            <div class="user_rating">
+                                <ul class="star_rating">
+                                    @Html.Raw(BanDongHo.Common.Common.HtmlRate(item.Rate))
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="review">
+                            <div class="review_date">@item.CreateDate.ToString("dd/MM/yyyy")</div>
+                            <div class="user_name">@item.FullName</div>
+                            <p>@item.Content</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            lastProductId = item.ProductId;
+        }
+    }
+    else
+    {
+        <p>Không có đánh giá nào.</p>
+    }
+</div>
+<div class="row">
+    <div class="col-6"></div>
+    <div class="col-6" style="text-align:right;">
+        @Html.PagedListPager(Model, page => Url.Action("_LoadAll_Review", new { page, productId = lastProductId }))
+    </div>
+</div>
+
+

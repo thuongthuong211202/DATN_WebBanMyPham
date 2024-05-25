@@ -1,0 +1,115 @@
+﻿@model IEnumerable<BanDongHo.Models.EF.Product>
+@{
+    ViewBag.Title = "Danh Sách Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+
+@*Khi bấm vào thương hiệu ở trang sản phẩm - Hiển thị từng sản phẩm của thương hiệu trong trang sản phẩm*@
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/home">Trang Chủ</a></li>
+                    <li class="active"><a href="/san-pham"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản Phẩm</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewBag.CateName</a></li>
+                </ul>
+            </div>
+
+            <!-- Sidebar -->
+
+            <div class="sidebar">
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Thương Hiệu</h5>
+                    </div>
+                    @Html.Action("MenuLeft", "Menu", new { id = ViewBag.CateId })
+                </div>
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="main_content">
+
+                <!-- tất cả sản phẩm-->
+
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">
+                             <div class="product_sorting_container product_sorting_container_top">
+                                <ul class="product_sorting">
+                                    <li>
+                                        <span class="type_sorting_text">Lọc Theo</span>
+                                        <i class="fa fa-angle-down"></i>
+                                        <ul class="sorting_type">
+                                           
+                                            <li><a href="/danh-muc-san-pham/citizens-2">Đồng Hồ Nữ</a></li>
+                                            <li><a href="/danh-muc-san-pham/skagens-4">Đồng Hồ Nam</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                             </div>
+
+                            <!-- từng sản phẩm -->
+
+                            <div class="product-grid">
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                      
+                                        var strImge = "";
+                                        var img = item.ProductImages.FirstOrDefault(x => x.IsDefault);
+                                        if (img != null)
+                                        {
+                                            strImge = img.Image;
+                                        }
+                                        <div class="owl-item product_slider_item">
+                                            <div class="product-item @item.ProductCategory.Alias">
+                                                <div class="product discount product_filter">
+                                                    <div class="product_image">
+                                                        <img src="@strImge" alt="@item.Title">
+                                                    </div>
+                                                    <div class="favorite favorite_left"></div>
+                                                    @if (item.PriceSale > 0)
+                                                    {
+                                                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                                                    }
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a href="/chi-tiet/@item.Alias-p@(item.Id)">@item.Title</a></h6>
+                                                        @if (item.PriceSale > 0)
+                                                        {
+                                                            <div class="product_price">@BanDongHo.Common.Common.FormatNumber(item.PriceSale, 0) đ<span>@BanDongHo.Common.Common.FormatNumber(item.Price, 0) đ</span></div>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="product_price">@BanDongHo.Common.Common.FormatNumber(item.Price, 0) đ</div>
+                                                            <div style="display:none;" class="in_product_price">@item.Price</div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@item.Id">Thêm Giỏ Hàng</a></div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+}
+
+

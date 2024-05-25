@@ -1,0 +1,34 @@
+﻿@*Hiển thị đánh giá của người dùng*@
+@model PagedList.IPagedList<BanDongHo.Models.EF.ReviewProduct>
+@using PagedList.Mvc;
+@{
+    var lastProductId = 0;
+}
+@if (Model != null && Model.Any())
+{
+
+    foreach (var item in Model)
+    {
+        <div class=" d-flex flex-column flex-sm-row">
+            <div class="user">
+                <div class="user_pic"> <img style=" width: 70px; height: 70px;" src="https://t3.ftcdn.net/jpg/06/03/30/74/360_F_603307418_jya3zntHWjXWn3WHn7FOpjFevXwnVP52.jpg" /></div>
+                <div class="user_rating">
+                    <ul class="star_rating">
+                        @Html.Raw(BanDongHo.Common.Common.HtmlRate(item.Rate))
+                    </ul>
+                </div>
+            </div>
+            <div class="review">
+                <div class="review_date">@item.CreateDate.ToString("dd/MM/yyyy")</div>
+                <div class="user_name">@item.FullName</div>
+                <p>@item.Content</p>
+            </div>
+        </div>
+       lastProductId = item.ProductId; 
+    }
+    <div class="row">
+        <div class="col-12" style="text-align:center;" >
+            <a href="@Url.Action("_LoadAll_Review", "Review", new { productId = lastProductId})">Xem tất cả đánh giá</a>
+        </div>
+    </div>
+}

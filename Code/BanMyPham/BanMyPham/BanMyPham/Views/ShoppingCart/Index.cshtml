@@ -1,0 +1,92 @@
+﻿
+@using BanDongHo.Common
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/home">Trang Chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                </ul>
+            </div>
+
+            <!-- Sidebar -->
+            <!-- Main Content -->
+
+            <div class="row">
+                <div class="col-md-12" id="load_data">
+                    @Html.Action("Partial_Item_Cart", "ShoppingCart")
+                </div>
+                <div class="col-md-12">
+                    @if (ViewBag.CheckCart == null)
+                    {
+                        <div class="text-right">
+                            <a href="#" class="btn btn-danger btnDeleteAll">Xóa All</a>
+                            <a href="/thanh-toan" class="btn btn-success">Thanh toán</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @* <script>
+            $(document).ready(function () {
+                $(".btnUpdate").click(function () {
+                    var id = $(this).data("id");
+                    var quantity = $(this).closest("tr").find(".quantityInput").val();
+
+                    $.ajax({
+                        url: "/ShoppingCart/Update",
+                        type: "POST",
+                        data: { id: id, quantity: quantity },
+                        dataType: "json",
+                        error: function () {
+                            // Xử lý lỗi
+                            alert("Sản phẩm vượt quá số lượng tồn kho!!");
+                        }
+                    });
+                });
+            });
+        </script>*@
+    <script>
+        function addToCart(id, quantity) {
+            $.ajax({
+                url: '/ShoppingCart/AddToCart',
+                type: 'POST',
+                data: { id: id, quantity: quantity },
+                success: function (response) {
+                    if (response.Success) {
+                        // Thêm sản phẩm vào giỏ hàng thành công
+                        alert(response.msg);
+                        // Cập nhật số lượng sản phẩm trong giỏ hàng
+                        $('#cartCount').text(response.Count);
+                    } else {
+                        // Xử lý khi thêm sản phẩm vào giỏ hàng không thành công
+                        alert('Lỗi: ' + response.msg);
+                    }
+                },
+                error: function () {
+                    // Xử lý lỗi
+                    alert('Đã có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+                }
+            });
+        }
+    </script>
+    
+
+
+}

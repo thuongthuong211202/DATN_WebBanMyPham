@@ -1,0 +1,72 @@
+﻿@model BanDongHo.Models.OrderViewModel
+@*khi bấm thanh toán*@
+@using (Ajax.BeginForm("CheckOut", "Shoppingcart", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+
+}, new { @Id = "myForm" }))
+{
+    <script>
+            @*khi chuyển sang link thanh toán sẽ hiện thẻ h2 *@
+        function OnBeginCO() {
+            $('#btnCheckOut').attr("disabled", "disabled");
+            $('#load_send').html('<h2>Đang gửi....</h2>');
+        }
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                    location.href = "/ShoppingCart/CheckOutSuccess";
+                }
+                else {
+                    location.href = res.Url;
+                }
+            }
+        }
+                //function OnFailure() {
+
+                //}
+    </script>
+    //Khi @Html.AntiForgeryToken() được sử dụng trong một form trong Razor view, nó sẽ tạo ra một mã thông báo duy nhất (token) và chèn nó vào mã HTML của form đó.
+    //Mã thông báo này sẽ được sử dụng để xác thực rằng yêu cầu gửi đi từ trang web là hợp lệ và không bị giả mạo.
+    @Html.AntiForgeryToken()
+    <h3>Thông tin khách hàng</h3>
+    <div class="form-group">
+        <label>Họ tên khách hàng</label>
+      
+        <input type="text" name="CustomerName" required class="form-control" autocomplete="off" value=" @Model.CustomerName" style="color:black;" />
+    </div>
+    <div class="form-group">
+        <label>Số điện thoại</label>
+      
+        <input type="text" name="Phone" class="form-control" autocomplete="off" value=" @Model.Phone" style="color:black;" />
+    </div>
+    <div class="form-group">
+        <label>Địa chỉ</label>
+        <input type="text" name="Address" class="form-control" autocomplete="off" value=" @Model.Address" style="color:black;"/>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" name="Email" class="form-control" autocomplete="off" value=" @Model.Email" style="color:black;" />
+    </div>
+    <div class="form-group">
+        <label>Hình thức thanh toán</label>
+        <select class="form-control" name="TypePayment" id="drTypePayment">
+            <option value="1" selected>Thanh Toán Khi Nhận Hàng</option>
+            <option value="2">Chuyển khoản</option>
+        </select>
+    </div>
+    <div class="form-group" id="load_form_payment" style="display:none;">
+
+        <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+        <h5>Thanh toán qua tài khoản ngân hàng</h5>
+        <label><input type="radio" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+    </div>
+    <div class="form-group" id="load_send"></div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-block btn-success" id="btnCheckOut">Đặt hàng</button>
+    </div>
+}

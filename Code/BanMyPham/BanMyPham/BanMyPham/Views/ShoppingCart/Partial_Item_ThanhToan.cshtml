@@ -1,0 +1,32 @@
+﻿@model IEnumerable<BanDongHo.Models.ShoppingCartItem>
+@using BanDongHo.Common
+@*lấy thông tin số lượng sản phẩm hiển thị trang xác nhận lại thông tin khi thanh toán*@
+@if (Model != null && Model.Any())
+{
+    <h3>GIỎ HÀNG <span style="float:right;position:relative"><small>@Model.Count()</small></span></h3>
+    var i = 0;
+    var tongtien = decimal.Zero;
+    <div style="border:1px solid #808080;">
+        <table class="table">
+            @foreach (var item in Model)
+            {
+
+                tongtien += item.TotalPrice;
+                <tr>
+                    <td>@item.ProductName x @item.Quantity</td>
+                    <td>@Common.FormatNumber(item.TotalPrice, 0)đ</td>
+                </tr>
+            }
+            <tr>
+                <td>Tổng tiền</td>
+                <td>@Common.FormatNumber(tongtien, 0)đ</td>
+            </tr>
+        </table>
+    </div>
+
+}
+else
+{
+
+}
+

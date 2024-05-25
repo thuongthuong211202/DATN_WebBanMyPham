@@ -1,0 +1,23 @@
+﻿@model IEnumerable<BanDongHo.Models.EF.ProductCategory>
+
+@*phần danh sách Thương hiệu trong trang sản phẩm*@
+@if (Model != null && Model.Any())
+{
+    <ul class="sidebar_categories">
+        @foreach (var item in Model)
+        {
+            @*Cách 1*@
+            if (ViewBag.CateId == item.Id) //active khi click vào
+            {
+                <li class="active"><a href="/danh-muc-san-pham/@item.Alias-@item.Id"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>@item.Title</a></li>
+            }
+            else
+            {
+                <li><a href="/danh-muc-san-pham/@item.Alias-@item.Id">@item.Title</a></li>
+            }
+
+
+        }
+    </ul>
+}
+
